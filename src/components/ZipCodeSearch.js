@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import '../App.css'
 import axios from 'axios';
-import { Button, NavLink, InputGroup, FormControl, Jumbotron} from 'react-bootstrap';
+import { Button, Table, NavLink, InputGroup, FormControl, Jumbotron} from 'react-bootstrap';
 import ResultTable from "./ResultTable.js"
 
 class ZipCodeSearch extends Component{
@@ -105,7 +105,7 @@ class ZipCodeSearch extends Component{
                         </div>
                     </div>
                 </form>,
-                <table className="zipcode-table">
+                <table  className="table-responsive-sm table-bordered table-hover d-sm-table  table-striped zipcode-table">
                     <tbody>
                     {this.dataList()}
                     </tbody>
