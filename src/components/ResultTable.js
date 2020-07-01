@@ -19,13 +19,17 @@ class ResultTable extends Component{
             console.log("the data " + this.props.data);
             try {
              let x = JSON.parse(this.props.data);
-            console.log("the first state " + x[0].State);
+
                 for(let i=0; i<this.props.data.length; i++){
-                    table.push(<tr>
+                    table.push(
+                        <th>{x[i].City},{x[i].State}</th>,
+                        <tr>
                         <p> State: {x[i].State} </p>
                         <p> Location: {x[i].Lat}, {x[i].Long} </p>
                         <p> Population: {x[i].EstimatedPopulation} </p>
                         <p> Wages: {x[i].TotalWages} </p>
+
+
 
                     </tr>);
                 }
