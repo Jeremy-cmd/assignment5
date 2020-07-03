@@ -11,7 +11,7 @@ class ResultTable extends Component{
 
     render() {
         let table = [];
-        if(this.props.empty === "true") {
+        if(this.props.empty === "true" || this.props.error) {
               table.push(<tr>No Results</tr>);
               return table;
         }

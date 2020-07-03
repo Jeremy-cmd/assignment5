@@ -11,7 +11,8 @@ class ZipCodeSearch extends Component{
         this.state = {
             zipdata: [],
             zipcode: "",
-            results: false
+            results: false,
+            error: false
         }
     }
 
@@ -48,6 +49,10 @@ class ZipCodeSearch extends Component{
 
     handleSearch = () =>{
         let zipcode = this.state.zipcode;
+        if(zipcode.length != 5 || parseInt(zipcode) != zipcode){
+          this.setState({error: true});
+          return;
+        }
         let API = 'http://ctp-zip-api.herokuapp.com/zip/' + zipcode;
         console.log("the zipcode sent is " + zipcode);
         fetch(API).then((response) => {
@@ -62,6 +67,9 @@ class ZipCodeSearch extends Component{
             this.setState({results: true });
             console.log("shows if state is being changed or not " + this.state.results);
             this.setState({zipdata: zipcodedata, results: true});
+            if(zipcodedata.length === 0){
+              this.setState({results: false});
+            }
         }).catch((error) => {
             console.log('Error', error);
         })
@@ -78,7 +86,7 @@ class ZipCodeSearch extends Component{
         else{
             console.log("reaches here");
             console.log("the data before it is sent " + this.state.zipdata);
-            return <ResultTable empty = "false" data = {this.state.zipdata} />
+            return <ResultTable empty = "false" data = {this.state.zipdata} error = {this.state.error}/>
         }
 
     }
