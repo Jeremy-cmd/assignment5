@@ -21,7 +21,10 @@ class ResultTable extends Component{
              let x = JSON.parse(this.props.data);
 
                 for(let i=0; i<x.length; i++){
+<<<<<<< HEAD
 
+=======
+>>>>>>> d8b2c2341ef37de37e7ff1d8b9b6d6fec434ed41
                     table.push(
                         <th>{x[i].City},{x[i].State}</th>,
                         <tr>
