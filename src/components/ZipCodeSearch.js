@@ -9,8 +9,11 @@ class ZipCodeSearch extends Component{
     constructor(props) {
         super(props);
         this.state = {
+            //where data is stored from api call
             zipdata: [],
+            //zipcode user enters
             zipcode: "",
+            //tells if results were received or not
             results: false,
             error: false
         }
@@ -19,40 +22,22 @@ class ZipCodeSearch extends Component{
     zipcodeChange = (event) => {
         console.log("it calls zipcode");
         console.log(event.target.value);
+        //store zipcode user entered
         this.setState({zipcode: event.target.value});
         console.log(this.state.zipcode);
 
     }
 
-    // handleSearch = async () => {
-    //     let zipcode = this.state.zipcode;
-    //
-    //         let API = 'http://ctp-zip-api.herokuapp.com/zip/' + zipcode;
-    //         try {
-    //             console.log("it went to handle search")
-    //             let response = await axios.get(API).data;
-    //             console.log("the data directly from response " + JSON.stringify(response));
-    //             this.setState({zipdata: JSON.stringify(response), results: true});
-    //
-    //
-    //         } catch (e) {
-    //             if (e.response) {
-    //                 console.log(e.response.data);
-    //                 this.setState({results: false});
-    //             }
-    //
-    //         }
-    //
-    //
-    //
-    // }
-
     handleSearch = () =>{
         let zipcode = this.state.zipcode;
+        //make sure zipcode entered is valid and is a number
         if(zipcode.length != 5 || parseInt(zipcode) != zipcode){
-          this.setState({error: true});
-          return;
+            this.setState({error: true});
+            return;
         }
+        this.setState({error: false});
+
+        //API call
         let API = 'http://ctp-zip-api.herokuapp.com/zip/' + zipcode;
         console.log("the zipcode sent is " + zipcode);
         fetch(API).then((response) => {
@@ -62,13 +47,16 @@ class ZipCodeSearch extends Component{
               return response.json();
 
         }).then((data) => {
-            console.log("synchrounous data " + JSON.stringify(data));
+
+            //change data to string
             let zipcodedata = JSON.stringify((data));
             this.setState({results: true });
-            console.log("shows if state is being changed or not " + this.state.results);
+            //store data in zipdata
             this.setState({zipdata: zipcodedata, results: true});
+
+            // if data is empty then results were false
             if(zipcodedata.length === 0){
-              this.setState({results: false});
+                this.setState({results: false});
             }
         }).catch((error) => {
             console.log('Error', error);
@@ -80,13 +68,14 @@ class ZipCodeSearch extends Component{
     dataList = () => {
       let result = this.state.results;
         console.log("results " + result);
+
+        //if no results then set table to be empty
         if(!result){
            return <ResultTable empty = "true"/>
         }
         else{
-            console.log("reaches here");
-            console.log("the data before it is sent " + this.state.zipdata);
-            return <ResultTable empty = "false" data = {this.state.zipdata} error = {this.state.error}/>
+            //send data to table component where it will return html with data
+            return <ResultTable empty = "false" data = {this.state.zipdata} error = {this.state.error} />
         }
 
     }
@@ -107,14 +96,19 @@ class ZipCodeSearch extends Component{
                     <div id="input" className="form-group row">
                         <label htmlFor="inputPassword" className="col-sm-2 col-form-label">Zip Code:</label>
                         <div className="col-sm-10">
+
+                            {/*store data when written with onChange*/}
                             <input type="text" className="form-control" id="inputPassword" placeholder="10016"
+                                   // call zipcodeChange function to store zipcode
                                    onChange={this.zipcodeChange}/>
+                            {/*       call handle search when clicked*/}
                             <Button variant="primary" onClick={this.handleSearch}>Search</Button>
                         </div>
                     </div>
                 </form>,
                 <table  className="table-responsive-sm table-bordered table-hover d-sm-table  table-striped zipcode-table">
                     <tbody>
+                    {/*data from API*/}
                     {this.dataList()}
                     </tbody>
                 </table>
