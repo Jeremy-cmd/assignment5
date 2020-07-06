@@ -11,6 +11,8 @@ class ResultTable extends Component{
 
     render() {
         let table = [];
+
+        //if data was empty return no results
         if(this.props.empty === "true" || this.props.error) {
               table.push(<tr>No Results</tr>);
               return table;
@@ -18,10 +20,11 @@ class ResultTable extends Component{
         else {
             console.log("the data " + this.props.data);
             try {
+                //turn string into JSON
              let x = JSON.parse(this.props.data);
 
+             //store html with data to be shown to user
                 for(let i=0; i<x.length; i++){
-
                     table.push(
                         <th>{x[i].City},{x[i].State}</th>,
                         <tr>
